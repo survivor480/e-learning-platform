@@ -1,4 +1,15 @@
-const error_handler = async (err, res) => {
+
+import { Request, Response } from "express";
+import { validationResult } from "express-validator";
+
+interface ErrorResponseType {
+    error?: String,
+    errors?: String[],
+    type: string,
+    statusCode: number
+}
+
+const error_handler = async (err:any, res: Response) => {
     console.log("Error Handler Called");
 
     if(err.errors !== undefined){
@@ -10,11 +21,15 @@ const error_handler = async (err, res) => {
     }
 
     if(err.error !== undefined){
+        console.log("The status code is: ", err.statusCode);
+        console.log("The error is: ", err);
         return res.status(err.statusCode || 400).json({
             status: 'failed',
             message: err.error
         })
     }
+
+    console.log(err);
 
     return res.status(500).json({
         status: 'failed',
@@ -22,11 +37,21 @@ const error_handler = async (err, res) => {
     })
 }
 
-const request_errors = async (validation_result) => {
-    if(!validation_result.isEmpty()){
-        throw validation_result.array().length === 1 ? {error: validation_result.array()[1], statusCode: 406} : {errors: validation_result.array(), statusCode: 406};
+const throw_error = (req:Request) => {
+    const result = validationResult(req);
+
+    if(!result.isEmpty()){
+        let return_array:string[] = [];
+        result.array().forEach((element) => {
+            return_array.push(element.msg);
+        })
+        let return_object:ErrorResponseType = return_array.length === 1 ? {error: return_array[0], type: 'custom', statusCode: 406} : {errors: return_array, type: 'custom', statusCode: 406};
+        // throw new Error(JSON.stringify(return_object));
+        return return_object;
+    } else {
+        return undefined
     }
 }
 
 
-export {error_handler, request_errors};
+export {error_handler, throw_error};

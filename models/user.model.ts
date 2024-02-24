@@ -1,5 +1,5 @@
-import {Sequelize, Model, DataTypes} from 'sequelize';
-import * as config from '../config/config.json';
+import {Sequelize, Model, DataTypes, Op} from 'sequelize';
+import config from '../config/config';
 
 const sequelize = new Sequelize(
     config.database,
@@ -7,7 +7,9 @@ const sequelize = new Sequelize(
     config.password,
     {
         host: config.host,
-        dialect: 'postgres'
+        port: config.port,
+        dialect: 'postgres',
+        logging: false
     }
 );
 
@@ -21,17 +23,22 @@ class User extends Model {
 
     // Define static method for creating a user
     static async createUser(userData: Partial<User>): Promise<User> {
+        const user = await User.findAll({where: {
+            [Op.or]: [
+                { username: userData.username },
+                { name: userData.name },
+                { email: userData.email }
+            ]
+        }});
+        if(user.length > 0){
+            throw {error: 'User Already Exists', type: 'custom', statusCode: 409}
+        }
         return User.create(userData);
     }
 
-    // Define static method for reading all users
-    static async getAllUsers(): Promise<User[]> {
-        return User.findAll();
-    }
-
     // Define static method for reading a single user by ID
-    static async getUserById(userId: number): Promise<User | null> {
-        return User.findByPk(userId);
+    static async getUserByEmail(email: string): Promise<User | null> {
+        return User.findOne({where: {email: email}});
     }
 
     // Define instance method for updating a user

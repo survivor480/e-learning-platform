@@ -1,6 +1,5 @@
 import User from "./user.model";
 
-
 const create_models = async (alter=true) => {
     console.log("Create Models Function Called");
 
@@ -8,4 +7,4 @@ const create_models = async (alter=true) => {
 }
 
 
-export default create_models;
+export {create_models};

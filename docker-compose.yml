@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  database:
+    container_name: 'learning_pg_master'
+    image: 'postgres:latest'
+    ports:
+      - 3005:5432
+    networks:
+      - postgres-network
+    volumes:
+      - ./db-data/:/databases/
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=qwerty78
+      - POSTGRES_DB=learning
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: 'learning_pgadmin'
+    ports:
+      - 3006:80
+    depends_on:
+      - database
+    networks:
+      - postgres-network
+    volumes:
+      - ./pgadmin-data/:/databases/pgadmin/
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=keshavkjha1999@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=qwerty78
+
+  backend:
+    image: node:hydrogen-bullseye-slim
+    container_name: 'learning_backend'
+    ports: 
+      - 3002:3000
+    env_file:
+      - .env
+    depends_on:
+      - database
+    networks:
+      - postgres-network
+    volumes:
+      - ./:/volumes_backup
+
+networks: 
+  postgres-network:
+    driver: bridge
