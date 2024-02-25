@@ -1,12 +1,12 @@
 import express from 'express';
 
-import * as user_route from "./routes/user.routes";
+import * as user_route from "./routes/user.routes.js";
 
-import {create_models} from "./models/index";
+import {create_models} from "./models/index.js";
 
 import * as bodyparser from 'body-parser';
 
-import config from "./config/config";
+import config from "./config/config.js";
 
 import { Sequelize } from 'sequelize';
 
@@ -34,7 +34,7 @@ create_models(false);
 app.use('/user', user_route.router);
 
 app.listen(PORT, () => {
-    console.log("This Server has started");
+    console.log(`This Server has started on port ${PORT}`);
 })
 
 export {app, sequelize};

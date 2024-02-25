@@ -1,9 +1,13 @@
 
-import { Request, Response } from 'express';
-import * as error_handlers from '../error_handler/error_handler';
-import User from '../models/user.model';
+import { Response } from 'express';
+import * as error_handlers from '../error_handler/error_handler.js';
+import User from '../models/user.model.js';
+import {UserCreateRequest, UserReadRequest} from '../requests/User/user-create.js'
+import * as bcrypt from 'bcrypt';
 
-const create_user = async (req: Request, res: Response) => {
+const salt = 5
+
+const create_user = async (req: UserCreateRequest, res: Response) => {
     console.log("Create User called");
 
     try {
@@ -13,7 +17,11 @@ const create_user = async (req: Request, res: Response) => {
             throw error_handler;
         }
 
-        const userData = req.body;
+        let userData = req.body;
+
+        userData.password = await bcrypt.hash(userData.password, salt);
+
+        console.log(userData);
 
         const newUser = await User.createUser(userData);
 
@@ -26,8 +34,7 @@ const create_user = async (req: Request, res: Response) => {
     }
 }
 
-
-const login = async (req:Request, res:Response) => {
+const login = async (req:UserReadRequest, res:Response) => {
     console.log("Login Controller Called");
 
     try {
@@ -40,6 +47,10 @@ const login = async (req:Request, res:Response) => {
         const email:string = req.query.email;
 
         const user_details = await User.getUserByEmail(email);
+
+        const validPassword = await bcrypt.compare(req.query.password, user_details!.password);
+
+        if(!validPassword) throw {error: 'Invalid Password', type: 'custom', statusCode: 401};
 
         return res.status(200).json({
             status: 'success',
