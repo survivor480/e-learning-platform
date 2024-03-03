@@ -31,8 +31,10 @@ create_models(false);
 
 app.use('/user', user_route.router);
 
-app.listen(PORT, () => {
-    console.log(`This Server has started on port ${PORT}`);
-})
+if(process.env.NODE_ENV !== 'test'){
+    app.listen(PORT, () => {
+        console.log(`This Server has started on port ${PORT}`);
+    })
+}
 
 export {app, sequelize};

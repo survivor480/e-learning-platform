@@ -9,7 +9,7 @@ services:
     networks:
       - postgres-network
     volumes:
-      - ./db-data/:/databases/
+      - pg_data:/databases/
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=qwerty78
@@ -31,22 +31,22 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=qwerty78
 
   learning_backend:
-    image: node:hydrogen-bullseye-slim
-    container_name: 'learning_backend'
     build: .
-    ports: 
+    container_name: 'learning_backend'
+    ports:
       - 3002:3000
     env_file:
       - .env
-    depends_on:
-      - database
     networks:
       - postgres-network
-    # restart: always
     volumes:
-      - ./backend_data:/home/node/app
+      - .:/usr/src/app   # Mount the entire project directory
+      - /usr/src/app/node_modules  # Exclude node_modules from being overridden by the local volume
     command: npm start
 
 networks: 
   postgres-network:
     driver: bridge
+
+volumes:
+  pg_data:

@@ -4,6 +4,7 @@ import * as error_handlers from '../error_handler/error_handler';
 import User from '../models/user.model';
 import {UserCreateRequest, UserReadRequest} from '../requests/User/user-create'
 import * as bcrypt from 'bcrypt';
+import {create_token} from '../utils/token_management';
 
 const salt = 5
 
@@ -13,15 +14,11 @@ const create_user = async (req: UserCreateRequest, res: Response) => {
     try {
         const error_handler = error_handlers.throw_error(req);
 
-        if(error_handler !== undefined){
-            throw error_handler;
-        }
+        if(error_handler !== undefined) throw error_handler;
 
         let userData = req.body;
 
         userData.password = await bcrypt.hash(userData.password, salt);
-
-        console.log(userData);
 
         const newUser = await User.createUser(userData);
 
@@ -40,17 +37,21 @@ const login = async (req:UserReadRequest, res:Response) => {
     try {
         const error_handler = error_handlers.throw_error(req);
 
-        if(error_handler !== undefined){
-            throw error_handler
-        }
+        if(error_handler !== undefined) throw error_handler
 
         const email:string = req.query.email;
 
         const user_details = await User.getUserByEmail(email);
 
-        const validPassword = await bcrypt.compare(req.query.password, user_details!.password);
+        if(user_details === undefined || user_details === null) throw {error: 'No such user exists', type: 'custom'};
+
+        console.log(user_details.dataValues.password);
+
+        const validPassword = await bcrypt.compare(req.query.password, user_details.password);
 
         if(!validPassword) throw {error: 'Invalid Password', type: 'custom', statusCode: 401};
+
+        create_token(user_details);
 
         return res.status(200).json({
             status: 'success',

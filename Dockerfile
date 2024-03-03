@@ -1,32 +1,20 @@
+# Use the official Node.js image as a base image
+FROM node:hydrogen-bullseye-slim
 
-
-# Import the image that is needed to create the Dockerfile
-FROM node:hydrogen-bullseye-slim as development
-
-# Create app directory
+# Set the working directory inside the container
 WORKDIR /usr/src/app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json /usr/src/app/
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
+
+# Install dependencies
 RUN npm install
-#Run install cors
-#RUN npm install cors --save
-#RUN npm install http-errors --save
 
-#Run Audit Fix
-#RUN npm audit fix
+# Copy the rest of the application code to the working directory
+COPY . .
 
-# Bundle app source
-#COPY ./server/ ./
-COPY . /usr/src/app
-
-# Expose container port 3000
+# Expose the port the app runs on
 EXPOSE 3000
 
-# Run "start" script in package.json
-#CMD ["npm", "start"]
-
-#Run app on pm2
+# Command to run the application
 CMD ["npm", "start"]

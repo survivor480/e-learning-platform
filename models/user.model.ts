@@ -1,13 +1,13 @@
 import {Sequelize, Model, DataTypes, Op} from 'sequelize';
-import config from '../config/config';
+import configs from '../config/config';
 
 const sequelize = new Sequelize(
-    config.database,
-    config.user,
-    config.password,
+    configs.database,
+    configs.user,
+    configs.password,
     {
-        host: config.host,
-        port: config.port,
+        host: configs.host,
+        port: configs.port,
         dialect: 'postgres',
         logging: false
     }
@@ -57,7 +57,7 @@ class User extends Model {
 
     // Define static method for reading a single user by ID
     static async getUserByEmail(email: string): Promise<User | null> {
-        return User.findOne({where: {email: email}, attributes: {exclude: ['password']}});
+        return User.findOne({where: {email: email}});
     }
 
     // Define instance method for updating a user
