@@ -1,6 +1,6 @@
 import express from 'express';
 import {check, query} from 'express-validator';
-import * as user_controller from '../controllers/user.controller.js';
+import * as user_controller from '../controllers/user.controller';
 
 const router = express.Router();
 

@@ -1,12 +1,12 @@
 import express from 'express';
 
-import * as user_route from "./routes/user.routes.js";
+import * as user_route from "./routes/user.routes";
 
-import {create_models} from "./models/index.js";
+import {create_models} from "./models/index";
 
 import * as bodyparser from 'body-parser';
 
-import config from "./config/config.js";
+import config from "./config/config";
 
 import { Sequelize } from 'sequelize';
 
@@ -26,8 +26,6 @@ const PORT = process.env.PORT || 3000;
 
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended: false}))
-
-bodyparser.urlencoded({extended: false});
 
 create_models(false);
 

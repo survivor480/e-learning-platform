@@ -1,8 +1,8 @@
 
 import { Response } from 'express';
-import * as error_handlers from '../error_handler/error_handler.js';
-import User from '../models/user.model.js';
-import {UserCreateRequest, UserReadRequest} from '../requests/User/user-create.js'
+import * as error_handlers from '../error_handler/error_handler';
+import User from '../models/user.model';
+import {UserCreateRequest, UserReadRequest} from '../requests/User/user-create'
 import * as bcrypt from 'bcrypt';
 
 const salt = 5

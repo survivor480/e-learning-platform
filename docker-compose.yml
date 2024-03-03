@@ -30,9 +30,10 @@ services:
       - PGADMIN_DEFAULT_EMAIL=keshavkjha1999@gmail.com
       - PGADMIN_DEFAULT_PASSWORD=qwerty78
 
-  backend:
+  learning_backend:
     image: node:hydrogen-bullseye-slim
     container_name: 'learning_backend'
+    build: .
     ports: 
       - 3002:3000
     env_file:
@@ -41,8 +42,10 @@ services:
       - database
     networks:
       - postgres-network
+    # restart: always
     volumes:
-      - ./:/volumes_backup
+      - ./backend_data:/home/node/app
+    command: npm start
 
 networks: 
   postgres-network:

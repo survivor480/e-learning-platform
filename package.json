@@ -1,13 +1,13 @@
 {
-  "name": "backend",
+  "name": "learning-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "type": "module",
+  "main": "app.ts",
   "scripts": {
-    "start": "tsc && node dist/app.js",
+    "build": "tsc",
+    "start": "ts-node app.ts",
     "start:dev": "nodemon app.ts",
-    "test": "jest"
+    "test": "jest --runInBand"
   },
   "author": "",
   "license": "ISC",
