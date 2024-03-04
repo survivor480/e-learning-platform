@@ -10,6 +10,8 @@ import config from "./config/config";
 
 import { Sequelize } from 'sequelize';
 
+import swaggerConfig from './swagger'
+
 const sequelize = new Sequelize(
     config.database,
     config.user,
@@ -29,6 +31,10 @@ app.use(bodyparser.urlencoded({extended: false}))
 
 create_models(false);
 
+// Setup swagger
+app.use('/api-docs', swaggerConfig.serveSwagger, swaggerConfig.setupSwagger);
+
+// Routes Definitions
 app.use('/user', user_route.router);
 
 if(process.env.NODE_ENV !== 'test'){
