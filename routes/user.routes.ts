@@ -39,14 +39,24 @@ const router = express.Router();
  *               phone_number:
  *                 type: number
  *                 example: 9876543210
+
  *     responses:
  *       '200':
  *         status: success
  *         message: User Created Successfully
- *         
+ *         description: On successful creation of a User    
  *       '400':
+ *         status: failed
+ *         message: User Creation Failed
  *         description: Bad request
- *
+ *       '406':
+ *         status: failed
+ *         message: Enter proper Arguments
+ *         description: Enter proper Arguments
+ *       '409':
+ *         status: failed
+ *         message: What you want to create already exists
+ *         description: Data already exists
  */
 
 router.post('/create-user', 
@@ -58,6 +68,45 @@ router.post('/create-user',
     user_controller.create_user
 );
 
+
+/**
+ * 
+ * @swagger
+ * /user/get-user:
+ *  get:
+ *      summary: Login by a user
+ *      tags: [Users]
+ *      parameters:
+ *          -   in: query
+ *              name: email
+ *              schema:
+ *                  type: string
+ *              description: This is to get the enail of the user
+ *              example: sudhanshutiwary07@gmail.com
+ *          -   in: query
+ *              name: password
+ *              schema:
+ *                  type: password
+ *              description: The password of the user
+ *              example: '#Kanoon314#'
+ *      responses:
+ *          '200':
+ *              status: success
+ *              message: Logged in successfully
+ *              description: On Successful Login By User
+ *          '400':
+ *              status: failed
+ *              message: Login Unsuccessful
+ *              description: On Unsuccessful Login By User
+ *          '406':
+ *              status: failed
+ *              message: Enter proper Arguments
+ *              description: Enter proper Arguments
+ *          '409':
+ *              status: failed
+ *              message: What you want to create already exists
+ *              description: Data already exists 
+ */
 
 
 router.get('/get-user',

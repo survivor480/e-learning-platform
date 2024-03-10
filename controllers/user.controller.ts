@@ -52,11 +52,12 @@ const login = async (req:UserReadRequest, res:Response) => {
 
         if(!validPassword) throw {error: 'Invalid Password', type: 'custom', statusCode: 401};
 
-        create_token(user_details);
+        const generated_token = await create_token(user_details);
 
         return res.status(200).json({
             status: 'success',
-            message: user_details
+            message: 'Logged in successfully',
+            access_token: generated_token
         })
     } catch(err){
         return error_handlers.error_handler(err, res);

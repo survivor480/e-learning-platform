@@ -15,7 +15,7 @@ const create_token = async (data: User) => {
 const checkForValidToken = async (req: Request) => {
     const token:string = String(req.headers.authorization).split(' ')[1];
 
-    if(String(req.headers.authorization).split(' ')[0] === 'Bearer') throw {error: 'Not a Bearer Token', type: 'custom'}
+    if(String(req.headers.authorization).split(' ')[0] !== 'Bearer') throw {error: 'Not a Bearer Token', type: 'custom'}
 
     if(!token) throw {error: 'Unauthorized', type: 'custom', statusCode: 401}
 

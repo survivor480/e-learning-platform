@@ -3,9 +3,6 @@ import { Request } from "express";
 
 
 interface CourseCreateRequest extends Request {
-    headers: {
-        authorization: string
-    }
     body: {
         course_name: string,
         course_fees: string

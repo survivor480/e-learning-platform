@@ -9,8 +9,8 @@ const sequelize = new Sequelize(
         host: configs.host,
         port: configs.port,
         dialect: 'postgres',
-        logging: false
-    }
+        logging: false,
+    },
 );
 
 class Course extends Model {
@@ -66,26 +66,17 @@ Course.init({
         autoIncrement: true
     },
     course_name: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false
     },
     course_fees: {
-        type: DataTypes.DECIMAL(2, 10),
+        type: DataTypes.DECIMAL(10, 4),
         allowNull: false
-    },
-    created_at: {
-        type: DataTypes.DATEONLY,
-        allowNull: false,
-        defaultValue: DataTypes.NOW
-    },
-    updated_at: {
-        type: DataTypes.DATEONLY,
-        allowNull: false,
-        defaultValue: DataTypes.NOW
     }
 }, {
     sequelize,
-    modelName: 'course'
+    modelName: 'course',
+    underscored: true
 });
 
 
