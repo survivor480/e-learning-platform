@@ -54,7 +54,11 @@ class Course extends Model {
 
     // Define instance method for updating a user
     async updateUser(courseData: Partial<Course>): Promise<void> {
-        await this.update(courseData);
+        await this.update(courseData, {
+            where: {
+                course_id: courseData.course_id
+            }
+        });
     }
 }
 
