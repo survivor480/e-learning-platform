@@ -1,10 +1,10 @@
 import { Response } from "express";
 import * as error_handlers from '../error_handler/error_handler'
-import Course from "../models/courses.model";
-import { CourseCreateRequest, CourseReadRequest } from "../requests/Course/course-data";
+import Document from "../models/documents.model";
+import { DocumentCreateRequest, DocumentReadRequest } from "../requests/Documents/documents";
 import { checkForValidToken } from '../utils/token_management';
 
-const create_course = async (req: CourseCreateRequest, res: Response) => {
+const create_document = async (req: DocumentCreateRequest, res: Response) => {
     console.log("Create Course Called");
 
     try {
@@ -14,13 +14,13 @@ const create_course = async (req: CourseCreateRequest, res: Response) => {
 
         if(error_handler !== undefined) throw error_handler;
 
-        let courseData:Partial<Course> = req.body;
+        let documentData:Partial<Document> = req.body;
 
-        const newCourse = await Course.create(courseData);
+        const newDocument = await Document.create(documentData);
 
         return res.status(200).json({
             status: 'success',
-            message: newCourse
+            message: newDocument
         });
     } catch(err:any){
         return error_handlers.error_handler(err, res);
@@ -28,7 +28,7 @@ const create_course = async (req: CourseCreateRequest, res: Response) => {
 }
 
 
-const read_course = async (req: CourseReadRequest, res: Response) => {
+const read_document = async (req: DocumentReadRequest, res: Response) => {
     console.log("Read Course Called");
 
     try {
@@ -38,16 +38,16 @@ const read_course = async (req: CourseReadRequest, res: Response) => {
 
         if(error_handler !== undefined) throw error_handler;
 
-        const newCourse = await Course.getAllCourses();
+        const documents_instance = await Document.getAllDocuments();
 
         return res.status(200).json({
             status: 'success',
-            message: newCourse
+            message: documents_instance
         });
     } catch(err){
         return error_handlers.error_handler(err, res);
     }
 }
 
-export {create_course, read_course};
+export {create_document, read_document};
 

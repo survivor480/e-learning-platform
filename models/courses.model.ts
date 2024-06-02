@@ -1,5 +1,6 @@
 import {Sequelize, Model, DataTypes} from 'sequelize';
 import configs from '../config/config';
+import TestSeries from "./test_series.model";
 
 const sequelize = new Sequelize(
     configs.database,
@@ -82,6 +83,11 @@ Course.init({
     modelName: 'course',
     underscored: true
 });
+
+Course.hasMany(TestSeries, {
+    sourceKey: 'course_id',
+    foreignKey: 'course_id'
+})
 
 
 export default Course;

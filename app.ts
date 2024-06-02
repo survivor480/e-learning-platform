@@ -4,6 +4,8 @@ import * as user_route from "./routes/user.routes";
 
 import * as course_route from "./routes/courses.routes";
 
+import * as community_route from "./routes/community.routes";
+
 import {create_models} from "./models/index";
 
 import * as bodyparser from 'body-parser';
@@ -40,6 +42,8 @@ app.use('/api-docs', swaggerConfig.serveSwagger, swaggerConfig.setupSwagger);
 app.use('/user', user_route.router);
 
 app.use('/course', course_route.router);
+
+app.use('/community', community_route.router);
 
 if(process.env.NODE_ENV !== 'test'){
     app.listen(PORT, () => {

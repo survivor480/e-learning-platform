@@ -14,15 +14,16 @@ const sequelize = new Sequelize(
 );
 
 class Educator extends Model {
-    public course_id!: number;
-    public course_name!: string;
-    public course_fees!: string;
-    public created_at!: Date;
-    public updated_at!: Date;
+    public educator_id!: number;
+    public educator_name!: string;
+    public educator_description!: string;
+    public educator_educational_qualifications!: string[];
+    public delete_flag!: boolean;
+    public delete_date!: Date;
 
     // Define static method for creating a user
     static async createCourse(EducatorData: Partial<Educator>): Promise<Educator> {
-        const Educator = await Educator.findOne({where: {
+        const educator = await Educator.findOne({where: {
             educator_name: EducatorData.educator_name
         }});
 
@@ -59,7 +60,7 @@ class Educator extends Model {
 }
 
 Educator.init({
-    Educator_id: {
+    educator_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
@@ -74,7 +75,17 @@ Educator.init({
         allowNull: true
     },
     educator_educational_qualifications: {
-        type: DataTypes
+        type: DataTypes.ARRAY(DataTypes.STRING),
+        allowNull: true
+    },
+    delete_flag: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    },
+    delete_date: {
+        type: DataTypes.DATEONLY,
+        allowNull: true
     }
 }, {
     sequelize,

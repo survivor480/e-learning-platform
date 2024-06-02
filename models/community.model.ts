@@ -21,7 +21,6 @@ class Community extends Model {
     public delete_flag!: boolean;
     public delete_date!: Date
 
-
     // Define static method for creating a document
     static async createDocument(communityData: Partial<Community>): Promise<Community> {
         const community = await Community.findOne({
@@ -54,7 +53,7 @@ class Community extends Model {
     }
 
     // Document Update method
-    static async updateDocument(communityData: Partial<Community>): Promise<void> {
+    static async updateCommunity(communityData: Partial<Community>): Promise<void> {
         await this.update(communityData, {
             where: {
                 community_id: communityData.community_id
